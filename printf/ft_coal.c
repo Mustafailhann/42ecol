@@ -6,7 +6,7 @@
 /*   By: muilhan <muilhan@student.42istanbul.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 13:53:15 by muilhan           #+#    #+#             */
-/*   Updated: 2022/11/26 20:23:05 by muilhan          ###   ########.fr       */
+/*   Updated: 2022/12/03 17:43:42 by muilhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,36 +21,24 @@ int	ft_putchar(int c)
 int	ft_print_unit(unsigned int a)
 {
 	if (a > 9)
-	{
-		return ((a / 10) + (a % 10 + '0'));
-	}
+		return (ft_print_unit(a / 10) + ft_putchar(a % 10 + '0'));
+	return (ft_putchar(a + '0'));
 }
 
 int	ft_print_str(char *s)
 {
-	int	i;
-
-	i = 0;
-	while (*s)
-	{
-		ft_putchar(*s++);
-		i++;
-	}
-	return (i);
+	if (!s)
+		return (ft_print_str("(null)"));
+	if (!*s)
+		return (0);
+	return (ft_putchar(*s) + ft_print_str(s + 1));
 }
 
-int	ft_print_ptr(unsigned long long a)
+int	ft_print_hex(unsigned int a, const char format)
 {
-	if (a > 16)
-	{
-		ft_print_ptr(a / 16);
-		ft_print_ptr(a % 16);
-	}
-	else
-	{
-		if (a <= 9)
-			ft_putchar(a + 48);
-		else
-			ft_putchar((a - 10) + 'a');
-	}
+	if (a > 15)
+		return (ft_print_hex(a / 16, format) + ft_print_hex(a % 16, format));
+	if (format == 'x')
+		return (ft_putchar("0123456789abcdef"[a]));
+	return (ft_putchar("0123456789ABCDEF"[a]));
 }
